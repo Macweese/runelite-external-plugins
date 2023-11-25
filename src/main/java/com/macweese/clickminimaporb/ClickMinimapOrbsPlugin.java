@@ -34,9 +34,9 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -97,8 +97,8 @@ public class ClickMinimapOrbsPlugin extends Plugin
 
 		clientThread.invokeLater(() ->
 		{
-			specOrbWidget = client.getWidget(WidgetInfo.MINIMAP_SPEC_ORB).getStaticChildren()[1];
-			hitpointsOrbWidget = client.getWidget(WidgetInfo.MINIMAP_HEALTH_ORB).getStaticChildren()[1];
+			specOrbWidget = client.getWidget(ComponentID.MINIMAP_SPEC_ORB).getStaticChildren()[1];
+			hitpointsOrbWidget = client.getWidget(ComponentID.MINIMAP_HEALTH_ORB).getStaticChildren()[1];
 
 			if (!client.isResized())
 			{
@@ -151,13 +151,13 @@ public class ClickMinimapOrbsPlugin extends Plugin
 	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() != WidgetID.MINIMAP_GROUP_ID)
+		if (event.getGroupId() != InterfaceID.MINIMAP)
 		{
 			return;
 		}
 
-		specOrbWidget = client.getWidget(WidgetInfo.MINIMAP_SPEC_ORB).getStaticChildren()[1];
-		hitpointsOrbWidget = client.getWidget(WidgetInfo.MINIMAP_HEALTH_ORB).getStaticChildren()[1];
+		specOrbWidget = client.getWidget(ComponentID.MINIMAP_SPEC_ORB).getStaticChildren()[1];
+		hitpointsOrbWidget = client.getWidget(ComponentID.MINIMAP_HEALTH_ORB).getStaticChildren()[1];
 	}
 
 	@Subscribe
@@ -172,7 +172,7 @@ public class ClickMinimapOrbsPlugin extends Plugin
 		{
 			if (hitpointsOrbWidget == null)
 			{
-				hitpointsOrbWidget = client.getWidget(WidgetInfo.MINIMAP_HEALTH_ORB).getStaticChildren()[1];
+				hitpointsOrbWidget = client.getWidget(ComponentID.MINIMAP_HEALTH_ORB).getStaticChildren()[1];
 			}
 
 			boolean permeable = hitpointsOrbWidget.isHidden() || !hitpointsOrbWidget.getNoClickThrough();
@@ -186,7 +186,7 @@ public class ClickMinimapOrbsPlugin extends Plugin
 		{
 			if (specOrbWidget == null)
 			{
-				specOrbWidget = client.getWidget(WidgetInfo.MINIMAP_SPEC_ORB).getStaticChildren()[1];
+				specOrbWidget = client.getWidget(ComponentID.MINIMAP_SPEC_ORB).getStaticChildren()[1];
 			}
 
 			boolean permeable = specOrbWidget.isHidden() || !specOrbWidget.getNoClickThrough();
