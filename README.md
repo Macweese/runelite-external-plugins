@@ -1,1 +1,1 @@
-Select a branch to view a plugin.
+This is a template for creating plugins.
