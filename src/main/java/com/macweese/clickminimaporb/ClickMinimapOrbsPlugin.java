@@ -71,8 +71,10 @@ public class ClickMinimapOrbsPlugin extends Plugin
 
 	private static final int SCRIPT_UPDATE_HITPOINTS_ORB = 446;
 	private static final int SCRIPT_UPDATE_SPEC_ORB = 2792;
+	private static final int SCRIPT_UPDATE_PRAYER_ORB = 82;
 
 	private Widget specOrbWidget;
+	private Widget prayerOrbWidget;
 	private Widget hitpointsOrbWidget;
 
 	private boolean consumeSpecOrb;
@@ -98,6 +100,7 @@ public class ClickMinimapOrbsPlugin extends Plugin
 		clientThread.invokeLater(() ->
 		{
 			specOrbWidget = client.getWidget(ComponentID.MINIMAP_SPEC_ORB).getStaticChildren()[1];
+			prayerOrbWidget = client.getWidget(ComponentID.MINIMAP_PRAYER_ORB).getStaticChildren()[1];
 			hitpointsOrbWidget = client.getWidget(ComponentID.MINIMAP_HEALTH_ORB).getStaticChildren()[1];
 
 			if (!client.isResized())
@@ -107,6 +110,7 @@ public class ClickMinimapOrbsPlugin extends Plugin
 
 			setSpecOrbConsuming(consumeSpecOrb);
 			setHitpointsOrbConsuming(consumeHitpointsOrb);
+			setOrbNoClickThrough(prayerOrbWidget, config.blockPrayerOrb());
 		});
 	}
 
@@ -123,6 +127,7 @@ public class ClickMinimapOrbsPlugin extends Plugin
 			setSpecOrbConsuming(false);
 			setHitpointsOrbConsuming(false);
 		});
+		setOrbNoClickThrough(prayerOrbWidget, false);
 	}
 
 	@Subscribe
@@ -135,6 +140,7 @@ public class ClickMinimapOrbsPlugin extends Plugin
 
 		consumeSpecOrb = config.blockSpecialAttackOrb();
 		consumeHitpointsOrb = config.blockHitpointsOrb();
+		setOrbNoClickThrough(prayerOrbWidget, config.blockPrayerOrb());
 
 		clientThread.invokeLater(() ->
 		{
@@ -157,6 +163,7 @@ public class ClickMinimapOrbsPlugin extends Plugin
 		}
 
 		specOrbWidget = client.getWidget(ComponentID.MINIMAP_SPEC_ORB).getStaticChildren()[1];
+		prayerOrbWidget = client.getWidget(ComponentID.MINIMAP_PRAYER_ORB).getStaticChildren()[1];
 		hitpointsOrbWidget = client.getWidget(ComponentID.MINIMAP_HEALTH_ORB).getStaticChildren()[1];
 	}
 
@@ -195,6 +202,15 @@ public class ClickMinimapOrbsPlugin extends Plugin
 			{
 				setSpecOrbConsuming(consumeSpecOrb);
 			}
+		}
+		else if (event.getScriptId() == SCRIPT_UPDATE_PRAYER_ORB)
+		{
+			if (prayerOrbWidget == null)
+			{
+				prayerOrbWidget = client.getWidget(ComponentID.MINIMAP_PRAYER_ORB).getStaticChildren()[1];
+			}
+
+			setOrbNoClickThrough(prayerOrbWidget, config.blockPrayerOrb());
 		}
 	}
 
@@ -259,5 +275,15 @@ public class ClickMinimapOrbsPlugin extends Plugin
 			hitpointsOrbWidget.setNoClickThrough(isPoisonedOrDiseased);
 			hitpointsOrbWidget.setHidden(!isPoisonedOrDiseased);
 		}
+	}
+
+	private void setOrbNoClickThrough(Widget widget, boolean consume)
+	{
+		if (widget == null)
+		{
+			return;
+		}
+
+		widget.setNoClickThrough(consume);
 	}
 }

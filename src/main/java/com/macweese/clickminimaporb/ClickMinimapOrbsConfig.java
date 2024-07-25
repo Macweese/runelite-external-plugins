@@ -51,4 +51,14 @@ public interface ClickMinimapOrbsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "prayerOrb",
+		name = "Prayer",
+		description = "Block clicking through the prayer orb"
+	)
+	default boolean blockPrayerOrb()
+	{
+		return true;
+	}
 }
